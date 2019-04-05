@@ -1,16 +1,16 @@
 {
   "manifest_version": 2,
 
-  "name": "Modify CSS and HTML",
-  "version": "0.1.0",
-  "description": "Lateral blog post demo extension",
+  "name": "UofT Prerequisite Checker",
+  "version": "0.1.1",
+  "description": "Shows which courses have a course as a prerequisite",
 
   "content_scripts": [{
     "js": ["jquery-3.3.1.min.js", "content.js"],
     "matches": ["https://fas.calendar.utoronto.ca/course/*"]
   }],
   "permissions": [
-    "*://*/*"
+    "*://cobalt.qas.im/*"
   ]
 
 }

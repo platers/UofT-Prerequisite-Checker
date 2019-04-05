@@ -9,7 +9,7 @@ div.classList.add("clearfix");
 
 var bold = document.createElement("div"); //Header
 bold.classList.add("field-label");
-bold.innerHTML = "Prequisite for:&nbsp;";
+bold.innerHTML = "Prerequisite for:&nbsp;";
 div.append(bold);
 
 var items = document.createElement("div"); 
@@ -21,9 +21,14 @@ items.append(p);
 
 
 div.append(items);
-
+console.log(pre);
 var parent = document.getElementsByClassName("content clearfix")[0];
-parent.insertBefore(div, pre.nextSibling); 
+if(pre){
+	parent.insertBefore(div, pre.nextSibling); 
+} else{
+	pre = document.getElementsByClassName("field-type-text-with-summary")[0];
+	parent.insertBefore(div, pre.nextSibling); 
+}
 
 var courses = [];
 var dict = {};
