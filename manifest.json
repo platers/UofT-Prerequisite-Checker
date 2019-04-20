@@ -2,8 +2,8 @@
   "manifest_version": 2,
 
   "name": "UofT Prerequisite Checker",
-  "version": "0.1.1",
-  "description": "Shows which courses have a course as a prerequisite",
+  "version": "0.2.0",
+  "description": "Enhances the UofT course calendar",
 
   "content_scripts": [{
     "js": ["jquery-3.3.1.min.js", "content.js"],
@@ -11,6 +11,9 @@
   }],
   "permissions": [
     "*://cobalt.qas.im/*"
+  ],
+  "web_accessible_resources": [
+    "evals.json"
   ]
 
 }
