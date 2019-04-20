@@ -33,7 +33,7 @@ var courses = [];
 var dict = {};
 var code = document.getElementsByClassName("title")[0].innerText;
 code = code.split(':')[0];
-console.log(code);
+//console.log(code);
 $.ajax({	//request from cobalt api
     url: "https://cobalt.qas.im/api/1.0/courses/filter",
     data: {
@@ -47,7 +47,7 @@ $.ajax({	//request from cobalt api
         console.error("Error: " + errorThrown);
     },
     success: (response) => {
-        console.log(response);
+        //console.log(response);
         for(var key in response){
         	var item = response[key];
         	var s = item.code.substring(0, 6);
@@ -130,11 +130,16 @@ div2.append(items2);
 parent.insertBefore(div2, pre2);
 
 function courseevals(json){
-	console.log(json);
+	//console.log(json);
 
-	console.log(json[code][0]);
-	p1.innerText = json[code][0].toFixed(1);
-	p2.innerText = json[code][1].toFixed(1);
+	if(json[code]){
+		p1.innerText = json[code][0].toFixed(1);
+		p2.innerText = json[code][1].toFixed(1);
+	} else{
+		p1.innerText = "N/A";
+		p2.innerText = "N/A";
+	}
+
 }
 
 const url = chrome.runtime.getURL('evals.json');

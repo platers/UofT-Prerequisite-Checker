@@ -7,7 +7,7 @@
 
   "content_scripts": [{
     "js": ["jquery-3.3.1.min.js", "content.js"],
-    "matches": ["https://fas.calendar.utoronto.ca/course/*"]
+    "matches": ["https://fas.calendar.utoronto.ca/course/*", "https://daniels.calendar.utoronto.ca/course/*"]
   }],
   "permissions": [
     "*://cobalt.qas.im/*"
