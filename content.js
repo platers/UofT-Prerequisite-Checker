@@ -1,6 +1,6 @@
 var classname = "field-name-field-prerequisite1";
 var pre = document.getElementsByClassName(classname)[0];
-var div=document.createElement("div");
+var div = document.createElement("div");
 div.classList.add("field");
 div.classList.add("field-name-field-prerequisite1");
 div.classList.add("field-type-text-with-summary");
@@ -22,55 +22,54 @@ items.append(p);
 
 div.append(items);
 var parent = document.getElementsByClassName("content clearfix")[0];
-if(pre){
-	parent.insertBefore(div, pre.nextSibling);
-} else{
-	pre = document.getElementsByClassName("field-type-text-with-summary")[0];
-	parent.insertBefore(div, pre.nextSibling);
+if (pre) {
+    parent.insertBefore(div, pre.nextSibling);
+} else {
+    pre = document.getElementsByClassName("field-type-text-with-summary")[0];
+    parent.insertBefore(div, pre.nextSibling);
 }
 
 var courses = [];
 var dict = {};
 var code = document.getElementsByClassName("title")[0].innerText;
 code = code.split(':')[0];
-//console.log(code);
-$.ajax({	//request from cobalt api
-    url: "https://cobalt.qas.im/api/1.0/courses/filter",
-    data: {
-        q: 'prerequisite:"' + code + '"',
-        key: "UFfV09rD2yWjzb74WsHJ5KKEReUxKGZl",
-        sort: "-term",
-        limit: 100
-    },
-    error: (XMLHttpRequest, textStatus, errorThrown) => {
-        console.error("Status: " + textStatus);
-        console.error("Error: " + errorThrown);
-    },
-    success: (response) => {
-        //console.log(response);
-        for(var key in response){
-        	var item = response[key];
-        	var s = item.code.substring(0, 6);
-        	//console.log(s);
-        	if(!dict[s]) courses.push(item.code.substring(0, 8));
-        	dict[s] = true;
+console.log(code);
+
+function query(numResults) {
+    chrome.runtime.sendMessage({ "code": code, "offset": numResults }, messageResponse => {
+        console.log(messageResponse);
+        var response = messageResponse["response"];
+        for (var key in response) {
+            var item = response[key];
+            var s = item.code.substring(0, 6);
+            //console.log(s);
+            if (!dict[s]) courses.push(item.code.substring(0, 8));
+            dict[s] = true;
         }
-        courses.sort();
-        for(var i = 0; i < courses.length; i++){
-        	var element = courses[i];
-        	//console.log(element);
-					var a = document.createElement("a");
-					a.href = "/course/" + element;
-					a.target="_blank"
-					a.innerText = element;
-					if(i > 0) p.innerHTML += ', ';
-					p.append(a);
+        if (response.length == 0) {
+            courses.sort();
+            for (var i = 0; i < courses.length; i++) {
+                var element = courses[i];
+                //console.log(element);
+                var a = document.createElement("a");
+                a.href = "/course/" + element;
+                a.target = "_blank"
+                a.innerText = element;
+                if (i > 0) p.innerHTML += ', ';
+                p.append(a);
+            }
+            if (courses.length == 0) {
+                p.innerText = 'None';
+            }
+        } else {
+            query(numResults + response.length);
         }
-        if(courses.length == 0){
-        	p.innerText = 'None';
-        }
-    }
-});
+    });
+}
+
+query(0);
+
+
 
 
 
@@ -79,7 +78,7 @@ $.ajax({	//request from cobalt api
 //DIFFICULTY
 var classname1 = "field-name-field-section-link";
 pre1 = document.getElementsByClassName(classname1)[0];
-var div1=document.createElement("div");
+var div1 = document.createElement("div");
 div1.classList.add("field");
 div1.classList.add("field-name-field-prerequisite1");
 div1.classList.add("field-type-text-with-summary");
@@ -106,7 +105,7 @@ parent.insertBefore(div1, pre1);
 //RATING
 var classname2 = "field-name-field-section-link";
 pre2 = document.getElementsByClassName(classname2)[0];
-var div2=document.createElement("div");
+var div2 = document.createElement("div");
 div2.classList.add("field");
 div2.classList.add("field-name-field-prerequisite1");
 div2.classList.add("field-type-text-with-summary");
@@ -129,16 +128,16 @@ items2.append(p2);
 div2.append(items2);
 parent.insertBefore(div2, pre2);
 
-function courseevals(json){
-	//console.log(json);
+function courseevals(json) {
+    //console.log(json);
 
-	if(json[code]){
-		p1.innerText = json[code][0].toFixed(1);
-		p2.innerText = json[code][1].toFixed(1);
-	} else{
-		p1.innerText = "N/A";
-		p2.innerText = "N/A";
-	}
+    if (json[code]) {
+        p1.innerText = json[code][0].toFixed(1);
+        p2.innerText = json[code][1].toFixed(1);
+    } else {
+        p1.innerText = "N/A";
+        p2.innerText = "N/A";
+    }
 
 }
 
